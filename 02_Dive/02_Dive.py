@@ -1,7 +1,4 @@
-from os import error
-
-
-f = open("02_Dive/instructions.txt").readlines()
+f = open("instructions.txt").readlines()
 
 print("Part one:")
 

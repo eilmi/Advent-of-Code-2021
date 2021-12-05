@@ -1,4 +1,4 @@
-f = open("01_Sonar_Sweep/depth_measurements.txt").readlines()
+f = open("depth_measurements.txt").readlines()
 
 numbers = [int(i, base=10) for i in f] # convert string array into int array
 
