@@ -4,60 +4,96 @@ f = open("input.txt").readlines()
 #f = open("04_Giant_Squid/input.txt").readlines()
 
 
-bingo_numbers = f[0].strip().split(",")
-for i in range(0, len(bingo_numbers)):
+bingo_numbers = f[0].strip().split(",")# extract the numbers from the first line of the file
+
+
+for i in range(0, len(bingo_numbers)): #convert the string array into an int array
     bingo_numbers[i] = int(bingo_numbers[i])
 
+#find all empty lines  and therefor the start and endings of all present boards
 boardends=[]
-for i in range(1,len(f)):
-    if f[i]=="\n":
-        boardends.append(i)
+for i in range(1,len(f)): # iterate over all lines of the file excluding the first one
+    if f[i]=="\n": #check if line of file is empty
+        boardends.append(i) # if so add current line index to boardends array
 
-boardends.append(len(f))
+boardends.append(len(f)) # add last boardend manually because the file doesnt end with a empty line
 
 
+#create an 3-dimensional array containing all boards
 boards=[]
-for i in range(len(boardends)-1):
-    line = (f[boardends[i]+1:boardends[i+1]])
+for i in range(len(boardends)-1): 
+    block = (f[boardends[i]+1:boardends[i+1]])
     board=[]
-    for x in line:
-        numbers = x.split()
+    for x in block:
+        numbers = x.split() # split line of file into array of numbers for example: ["12 42 7"] -> [12,42,7]
 
-        board.append(numbers)
-    boards.append(board)
+        board.append(numbers) #append this array of numbers to current board array 
+    boards.append(board) # append this board to the array of boards
 
 nparray = np.array(boards,dtype=int)
 
 
 def checkifwon(numbers,boardarrays):
+    won_boards=[] 
     for i in range(boardarrays.shape[0]): #iterate over all boards
-        for x in range(boardarrays.shape[1]):
-            row=boardarrays[i,x,:]
+
+        for x in range(boardarrays.shape[1]): #check if a row of a board has won
+            row=boardarrays[i,x,:] # get row of board
             if all(item in numbers for item in row):
-                return i
+                won_boards.append(i) #add index of this board to the won_board array
         
-        for x in range(boardarrays.shape[2]):
-            column=boardarrays[i,:,x]
-            if all(item in numbers for item in column):
-                return i
+        for x in range(boardarrays.shape[2]): #check if a column of a board has won
+            column=boardarrays[i,:,x] # get column of board
+            if all(item in numbers for item in column): # check if all numbers of this column are in the list of already drawn numbers
+                won_boards.append(i) # add index of this board to the won_board array
+
+    return won_boards
 
 
+a_list=list(range(0,len(boards)))
+firstwinner=True
 
 for a in range(0,len(bingo_numbers)):
     nums=bingo_numbers[0:a+1]
     #print(nums)
     result = checkifwon(nums,nparray)
-    if (result is not None):
-        print("Board",result,"just won when",bingo_numbers[a],"was called")
+    yet_to_win_boards = [item for item in a_list if item not in list(dict.fromkeys(result))]
+    #print(bingo_numbers[a],yet_to_win_boards)
+
+
+    if (len(result)==1 and firstwinner==True):
+        firstwinner=False
+        winnernumber=a
+        winnerindex=result[0]
+        print("Board",winnerindex,"just won when",bingo_numbers[a],"was called")
+
+    if (len(yet_to_win_boards)==1):
+        loserindex=yet_to_win_boards[0]
+
+    if (len(yet_to_win_boards)==0):
+        print(bingo_numbers[a],"called - last winning board is Nr.", loserindex)
+        losernumber=a
         break
 
-winningboard=np.array(nparray[result])
+winningboard=np.array(nparray[winnerindex])
+losingboard=np.array(nparray[loserindex])
 
 #print(winningboard)
 tempboard=winningboard.flatten()
 
-test = [item for item in tempboard if item not in nums]
 
-print(sum(test)*bingo_numbers[a])
+notmarkednumbers = [item for item in tempboard if item not in bingo_numbers[0:winnernumber+1]]
+
+
+print(sum(notmarkednumbers)*bingo_numbers[winnernumber])
+
+
+tempboard=losingboard.flatten()
+
+
+notmarkednumbers = [item for item in tempboard if item not in bingo_numbers[0:losernumber+1]]
+
+
+print(sum(notmarkednumbers)*bingo_numbers[losernumber])
 
 print("finished!")

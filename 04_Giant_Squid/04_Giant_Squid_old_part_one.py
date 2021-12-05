@@ -30,66 +30,34 @@ nparray = np.array(boards,dtype=int)
 
 
 def checkifwon(numbers,boardarrays):
-    won_boards=[]
     for i in range(boardarrays.shape[0]): #iterate over all boards
-
         for x in range(boardarrays.shape[1]):
             row=boardarrays[i,x,:]
             if all(item in numbers for item in row):
-                won_boards.append(i)
+                return i
         
         for x in range(boardarrays.shape[2]):
             column=boardarrays[i,:,x]
             if all(item in numbers for item in column):
-                won_boards.append(i)
-
-    return won_boards
+                return i
 
 
-a_list=list(range(0,len(boards)))
-firstwinner=True
 
 for a in range(0,len(bingo_numbers)):
     nums=bingo_numbers[0:a+1]
     #print(nums)
     result = checkifwon(nums,nparray)
-    yet_to_win_boards = [item for item in a_list if item not in list(dict.fromkeys(result))]
-    #print(bingo_numbers[a],yet_to_win_boards)
-
-
-    if (len(result)==1 and firstwinner==True):
-        firstwinner=False
-        winnernumber=a
-        winnerindex=result[0]
-        print("Board",winnerindex,"just won when",bingo_numbers[a],"was called")
-
-    if (len(yet_to_win_boards)==1):
-        loserindex=yet_to_win_boards[0]
-
-    if (len(yet_to_win_boards)==0):
-        print(bingo_numbers[a],"called - last winning board is Nr.", loserindex)
-        losernumber=a
+    if (result is not None):
+        print("Board",result,"just won when",bingo_numbers[a],"was called")
         break
 
-winningboard=np.array(nparray[winnerindex])
-losingboard=np.array(nparray[loserindex])
+winningboard=np.array(nparray[result])
 
 #print(winningboard)
 tempboard=winningboard.flatten()
 
+test = [item for item in tempboard if item not in nums]
 
-notmarkednumbers = [item for item in tempboard if item not in bingo_numbers[0:winnernumber+1]]
-
-
-print(sum(notmarkednumbers)*bingo_numbers[winnernumber])
-
-
-tempboard=losingboard.flatten()
-
-
-notmarkednumbers = [item for item in tempboard if item not in bingo_numbers[0:losernumber+1]]
-
-
-print(sum(notmarkednumbers)*bingo_numbers[losernumber])
+print(sum(test)*bingo_numbers[a])
 
 print("finished!")
