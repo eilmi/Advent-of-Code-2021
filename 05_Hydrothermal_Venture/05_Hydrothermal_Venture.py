@@ -15,9 +15,6 @@ for i in f:
 
 nparray=np.array(array,dtype=int) # convert in numpy array
 
-
-# --------- Part one --------
-
 # get all diagonal lines
 diagonallines=[]
 for i in range(nparray.shape[0]):
@@ -35,13 +32,12 @@ map2 = np.zeros([ymax+1,xmax+1])
 
 for i in range(nparray.shape[0]): # run for all lines in file
     line = nparray[i] # current working line
-    if (i not in diagonallines): # horizontal and vertical line
+    if (i not in diagonallines): # horizontal and vertical line ---- Part one
         for x in range(min(line[0,0],line[1,0]),max(line[0,0],line[1,0])+1): # run for all x coordinates 
             for y in range(min(line[0,1],line[1,1]),max(line[0,1],line[1,1])+1): # run for all y coordinates
                 map[y,x]+=1
-                map2[y,x]+=1
 
-    else: # diagonal line
+    else: # diagonal line  ----- Part two
         if (abs(line[0,0]-line[1,0]) == abs(line[0,1]-line[1,1])): # just check if line is exactly 45 degrees (should always be true)
             dx=1 if (line[1,0]-line[0,0]>0) else -1  #check if second point has a greater x-Coordinate than the first point
             dy =1 if (line[1,1]-line[0,1]>0) else -1 # check if second point has a greater y-coordinate than first point
@@ -51,5 +47,6 @@ for i in range(nparray.shape[0]): # run for all lines in file
         else:
             print("Error line is not exactly 45 degrees")
 
+
 print("Part one:",(map > 1).sum())
-print("Part Two:",(map2 > 1).sum())
+print("Part Two:",((map+map2) > 1).sum())
