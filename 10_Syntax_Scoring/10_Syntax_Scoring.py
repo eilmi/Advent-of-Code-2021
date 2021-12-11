@@ -44,7 +44,6 @@ for i in lines:
             else:
                 errorcount+=1
                 if firsterror==True:
-                    #print("Test")
                     firsterror=False
                     if ch==")":
                         errorpoints=3
@@ -68,8 +67,8 @@ points=[]
 
 for i in notcompletedmissing:
     errorpoints=0
-    for x in i[::-1]:
-        errorpoints*=5
+    for x in i[::-1]: #reverse array an iterate over all elements
+        errorpoints*=5 # multiply by 5
         brak=returnoppositebracket(x)
         if brak==")":
             errorpoints+=1
@@ -81,4 +80,4 @@ for i in notcompletedmissing:
             errorpoints+=4
     points.append(errorpoints)
 
-print(int(np.median(points)))
+print("part two:",int(np.median(points)))
