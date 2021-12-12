@@ -20,7 +20,7 @@ minimalocations=[]
 for y in range(nparray.shape[0]):
     for x in range(nparray.shape[1]):
         neighborhood=[]
-        if (y>=1): # check if position there is at least one position to the left available
+        if (y>=1): # check if there is at least one position to the left available
             neighborhood.append(nparray[y-1][x])
         if(y<(nparray.shape[0])-1):
             neighborhood.append(nparray[y+1][x])
@@ -64,7 +64,7 @@ def checknearby(x,y):
 
 basins=[]
 for i in minimalocations: #iterate over all previously found local minimums
-    basins.append( checknearby(i[0],i[1]))
+    basins.append(checknearby(i[0],i[1]))
 
 
 print("Part two:",prod(sorted(basins,reverse=True)[0:3])) # sort after size, reverse sorted list, multiply the first 3 elements together
