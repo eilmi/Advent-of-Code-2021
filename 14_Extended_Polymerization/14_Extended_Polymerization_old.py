@@ -27,9 +27,9 @@ def getnewpolymere(polymere):
     return newpolymere
         
 
-for i in range(40):
+for i in range(10):
     polymere=getnewpolymere(polymere)
-    print(i)
+    #print(i)
     #print(polymere)
 
 mostcom = Counter(c.lower() for c in re.findall(r"\w", polymere)).most_common()[0]
