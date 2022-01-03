@@ -10,13 +10,11 @@ def decode_packet(s,nrofpackets):
 
         packetversion=int(content[0:3],2)
         totalversionsum+=packetversion
-
         typeid=int(content[3:6],2)
+        
         print("Packet version:",packetversion,"type id:",typeid,end="")
 
-        #content=s[6:] 
-
-        if typeid==4: # literal value
+        if typeid==4: # literal packet
             print(" -> Literal Packet",end="")
             #print(content)
 
@@ -86,7 +84,6 @@ def decode_packet(s,nrofpackets):
             else:
                 currentpacket+=1
 
-    print(literalarray)
     return literalarray,lastindex
 
         
@@ -107,9 +104,3 @@ values, li = decode_packet(r,1)
 
 print("Part one:",totalversionsum)
 print("Part Two:",values[0])
-
-
-#501 is too low
-
-# 241930482683 too low for part 2
-# 241937017731 is too low
