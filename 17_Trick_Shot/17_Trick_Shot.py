@@ -27,7 +27,7 @@ while True:
     else:
         break
 
-print(xmin)
+#print(xmin)
 
 def calcnewposandvel(vel,pos):
     pos[0]+=vel[0]
@@ -56,5 +56,5 @@ for x in range(xmin,xmax+1):
                 break
             vel,pos=calcnewposandvel(vel,pos)
 
-print(counter)
+print("part two:",counter)
 
