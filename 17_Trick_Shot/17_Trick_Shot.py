@@ -29,6 +29,9 @@ while True:
 
 print(xmin)
 
+
+#################### Part Two #########################
+
 def calcnewposandvel(vel,pos):
     pos[0]+=vel[0]
     pos[1]+=vel[1]
