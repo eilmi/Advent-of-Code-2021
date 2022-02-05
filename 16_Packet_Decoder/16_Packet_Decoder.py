@@ -96,7 +96,7 @@ f=f[0].strip()
 #f = "9C0141080250320F1802104A08"
 
 r = "{0:08b}".format(int(f, 16)).zfill(4*len(f))
-print(r)
+# print(r)
 totalversionsum=0
 
 
