@@ -126,8 +126,6 @@ lines=open("input.txt").readlines()
 s=lines[0].strip()
 
 for i in lines[1:]:
-    #print(" ",s)
-    #print("+",i.strip())
     s=addition(s,i.strip())
     s=reduce(s)
 
