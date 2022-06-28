@@ -1,3 +1,5 @@
+import numpy as np
+
 lines=open("input.txt").readlines()
 
 iea=lines[0]
@@ -6,74 +8,39 @@ for i in lines[2:]:
     img.append(i.strip())
 
 
-def getx(x,ar):
-    if x<-1:
-        return '...'
-    if x==-1:
-        return '..'+ar[0]
+def convertmaptopixel(surrpixels,algorithm):
+    st=''.join(surrpixels[0])+''.join(surrpixels[1])+''.join(surrpixels[2])
+    st=str.replace(st,'.','0').replace('#','1')
+    #print(st)
+    ind=(int(st,2))
+    #print(ind)
+    return algorithm[ind]
 
-    elif x==0:
-        return '.'+ar[0:2]
-        
-    elif x==len(ar)-1:
-       
-        return ar[x-1:x+1]+'.'
+def getsurrpixels(map,coords,default):
+    maxy=len(map)
+    maxx=len(map[0])
+    surrpixels=np.empty(shape=(3,3),dtype=np.str)
+    for dy in range(0,3):
+        for dx in range(0,3):
+            surrpixels[dy][dx]=map[coords[0]-1+dy][coords[1]-1+dx] if (coords[0]-1+dy>=0 and coords[1]-1+dx>=0 and coords[0]-1+dy<maxy and coords[1]-1+dx<maxx) else default
+    #surrpixels[0][0]=map[coords[0]-1][coords[1]-1] if (coords[0]-1>=0 and coords[1]-1>=0 and coords[0]-1<maxy and coords[1]-1<maxx) else default
+    #surrpixels[0][1]=map[coords[0]-1][coords[1]] if (coords[0]-1>=0 and coords[1]>=0 and coords[0]-1<maxy and coords[1]<maxx) else default
+    #surrpixels[0][2]=map[coords[0]-1][coords[1]+1] if (coords[0]-1>=0 and coords[1]+1>=0 and coords[0]-1<maxy and coords[1]+1<maxx) else default
 
-    elif x==len(ar):
-        return ar[x-1]+'..'
-    #elif x-1==len(ar):
-        #print("ERROR")
-    elif x>len(ar):
-        return '...'
-    else:
-        return ar[x-1:x+2]
-
+    return surrpixels
 
 
-for tt in range(2):
+default='.'
+for tt in range(50):
     newimg=[]
-    for i in range(-4,len(img)+4):
-        teimg=''
-        for x in range(-4,len(img[0])+4):
-            
-            temp=[]
-            if (i==-1):
-                temp.append('...')
-                temp.append('...')
-                temp.append(getx(x,img[0]))
-            elif i==0:
-                temp.append('...')
-                temp.append(getx(x,img[i]))
-                temp.append(getx(x,img[i+1]))
-                
-            elif i>0 and i<len(img)-1:
-                temp.append(getx(x,img[i-1]))
-                temp.append(getx(x,img[i]))
-                temp.append(getx(x,img[i+1]))
-            elif i==len(img)-1:
-                temp.append(getx(x,img[i-1]))
-                temp.append(getx(x,img[i]))
-                temp.append('...')
-            elif i==len(img):
-                temp.append(getx(x,img[i-1]))
-                temp.append('...')
-                temp.append('...')
-            else:
-                temp.append('...')
-                temp.append('...')
-                temp.append('...')
-
-            print(temp,end="")
-            st=temp[0]+temp[1]+temp[2]
-            st=str.replace(st,'.','0').replace('#','1')
-            ind=(int(st,2))
-            teimg+=iea[ind]
-        newimg.append(teimg)
-        print("")
-    print(img)
+    for y in range(-1,len(img)+1):
+        row=''
+        for x in range(-1,len(img[0])+1):
+            row+=convertmaptopixel(getsurrpixels(img,[y,x],default),iea)
+        newimg.append(row)
     img=newimg.copy()
+    default=convertmaptopixel(getsurrpixels(img,[-2,-2],default),iea)
 
-print(img)
 pixelcount=0
 for i in img:
     for t in i:
@@ -81,7 +48,6 @@ for i in img:
             pixelcount+=1
 
 print(pixelcount)
-
 
 # 5504 is too high
 
