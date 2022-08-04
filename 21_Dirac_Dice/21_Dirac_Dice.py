@@ -1,13 +1,14 @@
-lines=open("demo.txt").readlines()
+lines=open("input.txt").readlines()
 
-currentplayerpos=[]
+initialplayerpos=[]
 scorecount=[0,0]
 
 for i in lines:
-    currentplayerpos.append(int((i.strip().split(':')[1])))
+    initialplayerpos.append(int((i.strip().split(':')[1])))
 
 currentdicevalue=1
 dicesides=100
+currentplayerpos=initialplayerpos.copy()
 
 def getdicenumbers(val,max):
     f=0
@@ -53,20 +54,13 @@ def newuniverses(positions,scores,possibilities):
 
 
     if scores[0]>=21:
-        if scores[1]<21:
-            totalposs[0]+=possibilities
-            #next
-        return
-        #print(possibilities)
-        #totalposs[0]+=possibilities
-        #print(totalposs)
-        return
-
+        totalposs[0]+=possibilities
+        return False
     if scores[1]>=21:
         #print(possibilities)
         totalposs[1]+=possibilities
         #print(totalposs)
-        return
+        return True
 
     
     newposition=[0,0]
@@ -79,9 +73,11 @@ def newuniverses(positions,scores,possibilities):
             newposition[1]=((positions[1]+dicevalues[x])-1)%10+1
             newscore[1]=scores[1]+newposition[1]
             
-            newuniverses(newposition,newscore,possibilities*(possibleways[i]*possibleways[x]))
+            x = newuniverses(newposition,newscore,possibilities*possibleways[i]*possibleways[x])
+            if x==False:
+                break
 
 
-newuniverses([4,8],[0,0],1)
+newuniverses(initialplayerpos,[0,0],1)
 
 print(totalposs)
