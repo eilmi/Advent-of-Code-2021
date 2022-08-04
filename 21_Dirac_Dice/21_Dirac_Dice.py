@@ -41,57 +41,47 @@ while True:
         print("Player 2 won: "+str(scorecount[0]*t))
         break
 
-
-playerwins=[0,0]
-createduniverses=0
-
-def createnewuniverse(playerscore,playerpos,dicevalues):
-    global playerwins
-    global createduniverses
-    while True:
-        for x in range(0,6):
-            if dicevalues[x]==0:
-                newdicevalues=dicevalues.copy()
-                for i in range(1,4):
-                    newdicevalues[x]=i
-                    createduniverses+=1
-                    #print(newdicevalues)
-                    createnewuniverse(playerscore,playerpos,newdicevalues)
-        #print(dicevalues)
-        dicesum=sum(dicevalues[0:3])
-        playerpos[0]=((playerpos[0]+dicesum)-1)%10+1
-        playerscore[0]+=playerpos[0]
-        #print(dicesum)
-        if playerscore[0]>=21:
-            playerwins[0]+=1
-            return
+## Part Two
+totalposs=[0,0]
 
 
-        # for x in range(3,6):
-        #     if dicevalues[x]==0:
-        #         newdicevalues=dicevalues.copy()
-        #         for i in range(1,4):
-        #             newdicevalues[x]=i
-                    
-        #             #print(newdicevalues)
-        #             createnewuniverse(playerscore,playerpos,newdicevalues)
-        #         return
-        #print(dicevalues)
-        dicesum=sum(dicevalues[3:6])
-        playerpos[1]=((playerpos[1]+dicesum)-1)%10+1
-        playerscore[1]+=playerpos[1]
-        #print(dicesum)
-        if playerscore[1]>=21:
-            playerwins[1]+=1
-            return
+def newuniverses(positions,scores,possibilities):
+    _poss=possibilities
+    #global totalposs
+    dicevalues=[3,4,5,6,7,8,9]
+    possibleways=[1,3,6,7,6,3,1]
 
-        
-        createnewuniverse(playerscore.copy(),playerpos.copy(),[0,0,0,0,0,0])
-    return
 
-rr=[]
+    if scores[0]>=21:
+        if scores[1]<21:
+            totalposs[0]+=possibilities
+            #next
+        return
+        #print(possibilities)
+        #totalposs[0]+=possibilities
+        #print(totalposs)
+        return
 
-createnewuniverse([0,0],[4,8],[0,0,0,0,0,0])
+    if scores[1]>=21:
+        #print(possibilities)
+        totalposs[1]+=possibilities
+        #print(totalposs)
+        return
 
-print(playerwins[1])
-print(createduniverses)
+    
+    newposition=[0,0]
+    newscore=[0,0]
+    for i in range(0,7):
+        newposition[0]=((positions[0]+dicevalues[i])-1)%10+1
+        newscore[0]=scores[0]+newposition[0]
+        for x in range(0,7):
+
+            newposition[1]=((positions[1]+dicevalues[x])-1)%10+1
+            newscore[1]=scores[1]+newposition[1]
+            
+            newuniverses(newposition,newscore,possibilities*(possibleways[i]*possibleways[x]))
+
+
+newuniverses([4,8],[0,0],1)
+
+print(totalposs)
