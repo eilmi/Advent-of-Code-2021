@@ -39,11 +39,10 @@ sizez=maxz-minz
 
 turnedoncubes=[]
 
-for instru in instructions:
-    for x in range(instru[1][0],instru[1][1]+1):
-        for y in range(instru[2][0],instru[2][1]+1):
-            for z in range(instru[3][0],instru[3][1]+1):
-                pass
-
+for x in range(-50,51,1):
+    for y in range(-50,51,1):
+        for z in range(-50,51,1):
+            
+            pass
 
 print("END")
