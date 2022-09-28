@@ -2,7 +2,7 @@ lines=open("input.txt").readlines()
 
 initialplayerpos=[]
 
-for i in lines:
+for i in lines: #read starting position of both players from puzzle input
     initialplayerpos.append(int((i.strip().split(':')[1])))
 
 scorecount=[0,0]
@@ -12,10 +12,12 @@ currentplayerpos=initialplayerpos.copy()
 
 def getdicenumbers(val,max):
     """
-    
-    :param val:
-    :param max:
-    :return: 
+    Rolls the dice 3 times in a row and returns sum of all 3 and last dice result
+    increases diced value by 1 with each roll unless param max is reached in which case it resets to 1
+
+    :param val: value of first dice roll
+    :param max: maximum value which the dice can reach
+    :return: sum of the three dice rolls, last dice value
     """
     f=0
     for i in range(3):
@@ -69,7 +71,7 @@ def newuniverses(positions,scores,possibilities):
 
     if scores[1]>=21: # check if player 2 has a score of 21 or more
         totalposs[1]+=possibilities # add number of possibilities that lead to this result to total count of ways in which player 2 wins the game
-        return False # return False so that player 2 can create all of it's possible universess
+        return False # return False so that player 2 can create all of it's possible universes
 
     newposition=[0,0]
     newscore=[0,0]

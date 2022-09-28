@@ -1,6 +1,6 @@
 import numpy as np
 
-lines=open("input.txt").readlines()
+lines=open("demo.txt").readlines()
 
 instructions=[]
 for i in lines:
@@ -38,11 +38,21 @@ sizey=maxy-miny
 sizez=maxz-minz
 
 turnedoncubes=[]
+previousonstatements=[]
 
-for x in range(-50,51,1):
-    for y in range(-50,51,1):
-        for z in range(-50,51,1):
-            
-            pass
+
+for i in instructions:
+    for x in range(i[1][0],i[1][1]+1):
+        for y in range(i[2][0],i[2][1]+1):
+            for z in range(i[3][0],i[3][1]+1):
+                te=[x,y,z]
+                if i[0]=="on":
+                    if te not in turnedoncubes:
+                        turnedoncubes.append(te)
+                else:
+                    if te in turnedoncubes:
+                        turnedoncubes.remove(te)
 
 print("END")
+
+print(len(turnedoncubes))
